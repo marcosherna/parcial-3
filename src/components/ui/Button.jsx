@@ -48,22 +48,13 @@ export function Button({
           borderWidth: 1,
         };
       default:
-      case "primary":
         return { backgroundColor: theme.primary };
     }
   };
 
   const getTextColor = () => {
     if (disabled) return theme.secondaryText;
-
-    switch (variant) {
-      case "secondary":
-      case "outline":
-        return theme.primary;
-      default:
-      case "primary":
-        return theme.onPrimary;
-    }
+    return variant === "primary" ? theme.onPrimary : theme.primary;
   };
 
   const baseTextStyle = getTextStyle(
@@ -73,63 +64,66 @@ export function Button({
     "center"
   );
 
-  const renderIcon = () => {
-    if (!IconComponent || loading) return null;
-
-    return (
-      <IconComponent
-        size={iconSize}
-        color={getTextColor()}
-        style={[iconPosition === "left" ? styles.iconLeft : styles.iconRight]}
-      />
-    );
-  };
-
   return (
-    <View
-      style={[
-        styles.wrapper,
-        getButtonStyles(),
-        disabled && styles.disabled,
-        fullWidth && styles.fullWidth,
-        style,
-      ]}
-    >
+    <View style={[fullWidth && styles.fullWidth]}>
       <RectButton
         enabled={!disabled && !loading}
         onPress={onPress}
         rippleColor={theme.primary + "33"}
-        style={[styles.button, fullWidth && styles.fullWidth]}
+        style={[
+          styles.buttonContainer,
+          getButtonStyles(),
+          fullWidth && styles.fullWidth,
+          disabled && styles.disabled,
+          style,
+        ]}
         {...props}
       >
-        {loading ? (
-          <ActivityIndicator
-            size="small"
-            color={variant === "primary" ? theme.onPrimary : theme.primary}
-          />
-        ) : (
-          <View style={styles.contentRow}>
-            {icon && iconPosition === "left" && renderIcon()}
-            <Text style={[baseTextStyle, textStyle]}>{title}</Text>
-            {icon && iconPosition === "right" && renderIcon()}
-          </View>
-        )}
+        <View style={styles.pressableContent}>
+          {loading ? (
+            <ActivityIndicator
+              size="small"
+              color={variant === "primary" ? theme.onPrimary : theme.primary}
+            />
+          ) : (
+            <View style={styles.contentRow}>
+              {IconComponent && iconPosition === "left" && (
+                <IconComponent
+                  size={iconSize}
+                  color={getTextColor()}
+                  style={styles.iconLeft}
+                />
+              )}
+
+              <Text style={[baseTextStyle, textStyle]}>{title}</Text>
+
+              {IconComponent && iconPosition === "right" && (
+                <IconComponent
+                  size={iconSize}
+                  color={getTextColor()}
+                  style={styles.iconRight}
+                />
+              )}
+            </View>
+          )}
+        </View>
       </RectButton>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
+  buttonContainer: {
     borderRadius: 8,
-    overflow: "hidden",
+    overflow: "hidden", // ripple completo
+    minHeight: 48,
   },
-  button: {
+  pressableContent: {
+    flex: 1, // 🔥 CLAVE
     paddingVertical: 12,
     paddingHorizontal: 16,
     alignItems: "center",
     justifyContent: "center",
-    minWidth: 100,
   },
   fullWidth: {
     width: "100%",

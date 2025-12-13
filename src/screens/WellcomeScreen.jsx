@@ -1,16 +1,13 @@
 import { Button, Layout } from "../components/ui";
 
-import { useToast } from "../hooks/useToast";
-
-export default function WellcomeScreen({ navigation }) {
-  const toask = useToast();
+export default function WellcomeScreen({ navigation }) { 
 
   return (
     <Layout padding="md" gap="md" alignVertical="flex-end" fullWidth fullHeight>
       <Button
         title="Iniciar sesion"
         fullWidth
-        onPress={() => toask.success("Exito", "se aplico el toast")}
+        onPress={() => navigation.navigate("login")}
       />
       <Button
         title="Registrarse"
@@ -19,5 +16,6 @@ export default function WellcomeScreen({ navigation }) {
         onPress={() => navigation.navigate("register")}
       />
     </Layout>
+    
   );
 }
