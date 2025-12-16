@@ -20,6 +20,7 @@ export function BottomNavigation() {
         name="profile"
         component={ProfileScreen}
         options={{
+          headerShown: false,
           tabBarIcon: ({ color, size }) => <User color={color} size={size} />,
         }}
       />

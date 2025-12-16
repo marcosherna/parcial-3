@@ -8,3 +8,5 @@ export * from "./DatePicker";
 export * from "./Tabs";
 export * from "./loading";
 export * from "./LoadingTemplate";
+export * from "./Avatar";
+export * from "./Card";

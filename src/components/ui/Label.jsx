@@ -22,7 +22,15 @@ export function Label({
   const textStyle = getTextStyle(size, weight, resolvedColor, align, paragraph);
 
   return (
-    <Text style={[textStyle, style]} numberOfLines={numberOfLines} {...rest}>
+    <Text
+      style={[
+        textStyle,
+        { flexShrink: 1, flexWrap: "wrap", alignSelf: "stretch" },
+        style,
+      ]}
+      numberOfLines={numberOfLines}
+      {...rest}
+    >
       {children}
     </Text>
   );

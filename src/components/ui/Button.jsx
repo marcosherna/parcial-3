@@ -19,6 +19,7 @@ export function Button({
   icon = null,
   iconSize = 20,
   iconPosition = "left",
+  iconOnly = false, // 👈 NUEVO
   fullWidth = false,
   ...props
 }) {
@@ -52,7 +53,7 @@ export function Button({
     }
   };
 
-  const getTextColor = () => {
+  const getContentColor = () => {
     if (disabled) return theme.secondaryText;
     return variant === "primary" ? theme.onPrimary : theme.primary;
   };
@@ -60,7 +61,7 @@ export function Button({
   const baseTextStyle = getTextStyle(
     textSize,
     textWeight,
-    getTextColor(),
+    getContentColor(),
     "center"
   );
 
@@ -72,6 +73,7 @@ export function Button({
         rippleColor={theme.primary + "33"}
         style={[
           styles.buttonContainer,
+          iconOnly && styles.iconOnlyContainer, // 👈
           getButtonStyles(),
           fullWidth && styles.fullWidth,
           disabled && styles.disabled,
@@ -81,28 +83,15 @@ export function Button({
       >
         <View style={styles.pressableContent}>
           {loading ? (
-            <ActivityIndicator
-              size="small"
-              color={variant === "primary" ? theme.onPrimary : theme.primary}
-            />
+            <ActivityIndicator size="small" color={getContentColor()} />
           ) : (
             <View style={styles.contentRow}>
-              {IconComponent && iconPosition === "left" && (
-                <IconComponent
-                  size={iconSize}
-                  color={getTextColor()}
-                  style={styles.iconLeft}
-                />
+              {IconComponent && (
+                <IconComponent size={iconSize} color={getContentColor()} />
               )}
 
-              <Text style={[baseTextStyle, textStyle]}>{title}</Text>
-
-              {IconComponent && iconPosition === "right" && (
-                <IconComponent
-                  size={iconSize}
-                  color={getTextColor()}
-                  style={styles.iconRight}
-                />
+              {!iconOnly && (
+                <Text style={[baseTextStyle, textStyle]}>{title}</Text>
               )}
             </View>
           )}
@@ -115,11 +104,15 @@ export function Button({
 const styles = StyleSheet.create({
   buttonContainer: {
     borderRadius: 8,
-    overflow: "hidden", // ripple completo
+    overflow: "hidden",
     minHeight: 48,
   },
+  iconOnlyContainer: {
+    minWidth: 48,
+    paddingHorizontal: 0,
+  },
   pressableContent: {
-    flex: 1, // 🔥 CLAVE
+    flex: 1,
     paddingVertical: 12,
     paddingHorizontal: 16,
     alignItems: "center",
@@ -135,11 +128,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-  },
-  iconLeft: {
-    marginRight: 8,
-  },
-  iconRight: {
-    marginLeft: 8,
+    gap: 8,
   },
 });
