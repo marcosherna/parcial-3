@@ -1,10 +1,17 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { Platform } from "react-native";
 
-import { Button, DropdownSelect, Layout, Label } from "../../components/ui";
+import {
+  Button,
+  DropdownSelect,
+  Layout,
+  Label,
+  DatePicker,
+} from "../../components/ui";
 
 export default function HomeScreen() {
   const [pais, setPais] = useState("");
+  const [date, setDate] = useState(new Date());
 
   const paises = [
     { label: "Argentina", value: "ar" },
@@ -13,6 +20,13 @@ export default function HomeScreen() {
     { label: "Colombia", value: "co" },
     { label: "Chile", value: "cl" },
   ];
+
+  const onChange = (event, selectedDate) => {
+    if (selectedDate) {
+      setDate(selectedDate);
+      console.log(selectedDate);
+    }
+  };
 
   return (
     <Layout fullHeight>
@@ -24,6 +38,8 @@ export default function HomeScreen() {
       />
 
       <Label>{pais}</Label>
+
+      <DatePicker value={date} mode="date" onChange={onChange} />
     </Layout>
   );
 }
