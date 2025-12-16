@@ -20,9 +20,9 @@ export function MainNavigation() {
             headerShown: false,
           }}
         >
-          <Stack.Screen name="wellcome" component={WellcomeScreen} />
+          {/* <Stack.Screen name="wellcome" component={WellcomeScreen} />
           <Stack.Screen name="login" component={LoginScreen} />
-          <Stack.Screen name="register" component={RegisterScreen} />
+          <Stack.Screen name="register" component={RegisterScreen} /> */}
           <Stack.Screen name="main" component={BottomNavigation} />
         </Stack.Navigator>
       </NavigationContainer>
