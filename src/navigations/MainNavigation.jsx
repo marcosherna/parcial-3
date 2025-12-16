@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import WellcomeScreen from "../screens/WellcomeScreen";
+import DetailScreen from "../screens/DetailScreen";
 
 import { BottomNavigation } from "./BottomNavigation";
 
@@ -24,6 +25,15 @@ export function MainNavigation() {
           <Stack.Screen name="login" component={LoginScreen} />
           <Stack.Screen name="register" component={RegisterScreen} /> */}
           <Stack.Screen name="main" component={BottomNavigation} />
+          <Stack.Screen
+            name="detail"
+            options={{
+              title: "",
+              headerBackTitle: "Home",
+              headerShown: true,
+            }}
+            component={DetailScreen}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </>
