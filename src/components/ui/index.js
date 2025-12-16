@@ -6,3 +6,5 @@ export * from "./LoadingModal";
 export * from "./DropdownSelect";
 export * from "./DatePicker";
 export * from "./Tabs";
+export * from "./loading";
+export * from "./LoadingTemplate";
