@@ -12,6 +12,7 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 
+
 import { database } from "../firebase";
 
 export class FirebaseCrudService {

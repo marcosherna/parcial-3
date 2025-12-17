@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { View } from "react-native";
 
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
@@ -17,7 +17,9 @@ import { BttInput } from "../../components";
 import { spacing } from "../../resources/spacing";
 import { useForm, useToast } from "../../hooks";
 
-export default function Form({ modalRef }) {
+import { TaskService } from "../../network/services";
+
+export default function Form({ modalRef, editingItem, onFinish }) {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
   const { values, errors, handleChange, validateForm, resetForm } = useForm({
@@ -39,23 +41,34 @@ export default function Form({ modalRef }) {
     },
   });
 
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
   const handleSave = async () => {
     if (!validateForm()) return;
 
     try {
       setLoading(true);
-      console.log(values);
 
-      toast.success("Guardado", "Registro creado correctamente");
+      const payload = {
+        name: values.name,
+        description: values.description,
+        date: values.date,
+        active: values.active,
+      };
 
-      await sleep(1000);
+      if (editingItem) {
+        // UPDATE
+        await TaskService.update(editingItem.id, payload);
+        toast.success("Actualizado", "Registro actualizado correctamente");
+      } else {
+        // CREATE
+        await TaskService.create(payload);
+        toast.success("Guardado", "Registro creado correctamente");
+      }
 
       resetForm();
+      onFinish?.();
       modalRef.current?.dismiss();
     } catch (error) {
-      toast.error("Error", error.message ?? "Intentelo mas tarde");
+      toast.error("Error", error.message ?? "Inténtelo más tarde");
     } finally {
       setLoading(false);
     }
@@ -65,6 +78,18 @@ export default function Form({ modalRef }) {
     resetForm();
     modalRef.current?.dismiss();
   };
+
+  useEffect(() => {
+    if (editingItem) {
+      handleChange("name", editingItem.name);
+      handleChange("description", editingItem.description);
+      handleChange(
+        "date",
+        editingItem.date?.toDate ? editingItem.date.toDate() : editingItem.date
+      );
+      handleChange("active", editingItem.active);
+    }
+  }, [editingItem]);
 
   return (
     <ThemeBottomSheetModal
