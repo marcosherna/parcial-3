@@ -25,7 +25,7 @@ function GalleryTab() {
   );
 }
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }) {
   const { theme } = useTheme();
   const { user } = useAuth();
 
@@ -44,7 +44,12 @@ export default function ProfileScreen() {
             Perfil
           </Label>
         </Layout>
-        <Button icon="Settings" variant="outline" iconOnly />
+        <Button
+          icon="Settings"
+          variant="outline"
+          iconOnly
+          onPress={() => navigation.navigate("setting")}
+        />
       </Layout>
 
       <Layout

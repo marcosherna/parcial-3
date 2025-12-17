@@ -25,7 +25,7 @@ export function Label({
     <Text
       style={[
         textStyle,
-        { flexShrink: 1, flexWrap: "wrap", alignSelf: "stretch" },
+        { flexShrink: 1 },
         style,
       ]}
       numberOfLines={numberOfLines}

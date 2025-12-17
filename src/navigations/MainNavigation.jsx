@@ -6,6 +6,7 @@ import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import WellcomeScreen from "../screens/WellcomeScreen";
 import DetailScreen from "../screens/DetailScreen";
+import SettingScreen from "../screens/SettingScreen";
 
 import { BottomNavigation } from "./BottomNavigation";
 
@@ -33,6 +34,14 @@ export function MainNavigation() {
               headerShown: true,
             }}
             component={DetailScreen}
+          />
+
+          <Stack.Screen
+            name="setting"
+            options={{ 
+              headerShown: true,
+            }}
+            component={SettingScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

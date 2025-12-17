@@ -10,3 +10,5 @@ export * from "./loading";
 export * from "./LoadingTemplate";
 export * from "./Avatar";
 export * from "./Card";
+export * from "./Divider";
+export * from "./Shape";
