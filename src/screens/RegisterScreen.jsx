@@ -42,7 +42,10 @@ export default function RegisterScreen({ navigation }) {
       setLoading(false);
       toast.success("Cuenta creada", "Registro exitoso");
 
-      navigation.replace("login");
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "main" }],
+      });
     } catch (error) {
       setLoading(false);
       toast.error("Error", "No se pudo crear la cuenta");

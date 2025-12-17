@@ -38,7 +38,9 @@ export function MainNavigation() {
 
           <Stack.Screen
             name="setting"
-            options={{ 
+            options={{
+              title: "Configuraciones",
+              headerBackTitle: "Perfil",
               headerShown: true,
             }}
             component={SettingScreen}
