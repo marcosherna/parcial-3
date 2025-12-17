@@ -1,36 +1,42 @@
-import React, { useState } from "react";
-import { FlatList } from "react-native";
+import React, { useState, useRef } from "react";
+import { FlatList, View } from "react-native";
 
-import {
-  Layout,
-  Label,
-  Button,
-  Loading,
-  LoadingTemplate,
-} from "../../components/ui";
+import { Layout, Label, Button, LoadingTemplate } from "../../components/ui";
+
 import { spacing } from "../../resources/spacing";
-
-const renderHeader = () => {
-  return (
-    <Layout>
-      <Label>header</Label>
-    </Layout>
-  );
-};
+import Form from "../partials/Form";
 
 export default function HomeScreen({ navigation }) {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const bttSheet = useRef();
+
+  const handleBttSheet = () => {
+    bttSheet?.current.present();
+  };
+
+  const renderHeader = () => {
+    return (
+      <Layout paddingHorizontal="md" marginVertical="md">
+        <Button icon="Plus" title="Nuevo" onPress={handleBttSheet} />
+      </Layout>
+    );
+  };
+
   return (
-    <FlatList
-      data={[{ id: 1, title: "test" }]}
-      keyExtractor={(item) => item.id}
-      keyboardShouldPersistTaps="always"
-      keyboardDismissMode="none"
-      ListHeaderComponent={renderHeader}
-      renderItem={({ item }) => <Label>{item.title}</Label>}
-      contentContainerStyle={{ paddingBottom: spacing.md }}
-      showsVerticalScrollIndicator={false}
-      ListEmptyComponent={<>{loading ? <LoadingTemplate /> : undefined}</>}
-    />
+    <>
+      <FlatList
+        data={[]}
+        keyExtractor={(item) => item.id}
+        keyboardShouldPersistTaps="always"
+        keyboardDismissMode="none"
+        ListHeaderComponent={renderHeader}
+        renderItem={({ item }) => <Label>{item.title}</Label>}
+        contentContainerStyle={{ paddingBottom: spacing.md }}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={<>{loading ? <LoadingTemplate /> : undefined}</>}
+      />
+
+      <Form modalRef={bttSheet} />
+    </>
   );
 }

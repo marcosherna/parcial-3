@@ -12,3 +12,5 @@ export * from "./Avatar";
 export * from "./Card";
 export * from "./Divider";
 export * from "./Shape";
+export * from "./BottomSheet";
+export * from "./Switch";
