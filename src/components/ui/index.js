@@ -14,3 +14,4 @@ export * from "./Divider";
 export * from "./Shape";
 export * from "./BottomSheet";
 export * from "./Switch";
+export * from "./LoadingOverlay";

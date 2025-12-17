@@ -9,6 +9,7 @@ import {
   ThemeBottomSheetModal,
   Switch,
   DatePicker,
+  LoadingOverlay,
 } from "../../components/ui";
 
 import { BttInput } from "../../components";
@@ -17,6 +18,7 @@ import { spacing } from "../../resources/spacing";
 import { useForm, useToast } from "../../hooks";
 
 export default function Form({ modalRef }) {
+  const [loading, setLoading] = useState(false);
   const toast = useToast();
   const { values, errors, handleChange, validateForm, resetForm } = useForm({
     initialValues: {
@@ -37,15 +39,26 @@ export default function Form({ modalRef }) {
     },
   });
 
-  const handleSave = () => {
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  const handleSave = async () => {
     if (!validateForm()) return;
 
-    console.log(values);
+    try {
+      setLoading(true);
+      console.log(values);
 
-    toast.success("Guardado", "Registro creado correctamente");
+      toast.success("Guardado", "Registro creado correctamente");
 
-    resetForm();
-    modalRef.current?.dismiss();
+      await sleep(1000);
+
+      resetForm();
+      modalRef.current?.dismiss();
+    } catch (error) {
+      toast.error("Error", error.message ?? "Intentelo mas tarde");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleClose = () => {
@@ -60,44 +73,46 @@ export default function Form({ modalRef }) {
       onClose={() => handleClose()}
     >
       <BottomSheetScrollView>
-        <View style={{ padding: spacing.md, gap: spacing.md }}>
-          <BttInput
-            label="Nombre"
-            value={values.name}
-            error={errors.name}
-            onChangeText={(v) => handleChange("name", v)}
-          />
-          <BttInput
-            label="Descripción"
-            multiline
-            numberOfLines={3}
-            value={values.description}
-            error={errors.description}
-            onChangeText={(v) => handleChange("description", v)}
-          />
-
-          <Layout gap="xs">
-            <DatePicker
-              value={values.date}
-              onChange={(_, date) => {
-                if (date) handleChange("date", date);
-              }}
+        <LoadingOverlay loading={loading} background="theme">
+          <View style={{ padding: spacing.md, gap: spacing.md }}>
+            <BttInput
+              label="Nombre"
+              value={values.name}
+              error={errors.name}
+              onChangeText={(v) => handleChange("name", v)}
             />
-          </Layout>
-
-          <Layout
-            direction="row"
-            alignVertical="space-between"
-            alignHorizontal="center"
-          >
-            <Switch
-              value={values.active}
-              onValueChange={(v) => handleChange("active", v)}
+            <BttInput
+              label="Descripción"
+              multiline
+              numberOfLines={3}
+              value={values.description}
+              error={errors.description}
+              onChangeText={(v) => handleChange("description", v)}
             />
 
-            <Button title="Guardar" onPress={handleSave} />
-          </Layout>
-        </View>
+            <Layout gap="xs">
+              <DatePicker
+                value={values.date}
+                onChange={(_, date) => {
+                  if (date) handleChange("date", date);
+                }}
+              />
+            </Layout>
+
+            <Layout
+              direction="row"
+              alignVertical="space-between"
+              alignHorizontal="center"
+            >
+              <Switch
+                value={values.active}
+                onValueChange={(v) => handleChange("active", v)}
+              />
+
+              <Button title="Guardar" onPress={handleSave} />
+            </Layout>
+          </View>
+        </LoadingOverlay>
       </BottomSheetScrollView>
     </ThemeBottomSheetModal>
   );
