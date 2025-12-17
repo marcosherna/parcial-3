@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { ScrollView, Alert } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -29,6 +30,7 @@ export default function SettingScreen() {
   const insets = useSafeAreaInsets();
   const { user, signOut } = useAuth();
   const { theme, isDark } = useTheme();
+  const navigation = useNavigation();
 
   const handleOpenBttSheet = (option) => {
     setOption(option);
@@ -47,6 +49,13 @@ export default function SettingScreen() {
       );
   }, [option]);
 
+  const resetToWellcome = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "wellcome" }],
+    });
+  };
+
   const handleDeleteAccount = async (password) => {
     try {
       if (!user) return;
@@ -55,9 +64,7 @@ export default function SettingScreen() {
       await deleteUser(user);
       bttSheet.current?.dismiss();
 
-      if (navigation.canGoBack()) {
-        navigation.goBack();
-      }
+      resetToWellcome();
     } catch (error) {
       console.log(error);
       Alert.alert("Error", "No se pudo eliminar la cuenta");
@@ -68,9 +75,7 @@ export default function SettingScreen() {
   const handleLogout = async () => {
     try {
       await signOut();
-      if (navigation.canGoBack()) {
-        navigation.goBack();
-      }
+      resetToWellcome();
     } catch (error) {
       Alert.alert("Error", "No se pudo cerrar sesión");
     }

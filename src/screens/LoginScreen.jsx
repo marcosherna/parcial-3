@@ -36,7 +36,10 @@ export default function LoginScreen({ navigation }) {
       await sigIn(values.email, values.password);
       setLoading(false);
       toast.success("Bienvenido", "Inicio de sesión exitoso");
-      navigation.replace("main");
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "main" }],
+      });
     } catch (error) {
       setLoading(false);
       toast.error("Error", "Credenciales incorrectas");
@@ -55,7 +58,7 @@ export default function LoginScreen({ navigation }) {
         fullHeight
       >
         <Layout marginBottom="xl" alignHorizontal="center" fullWidth>
-          <Label size="3xl" weight="semibold" >
+          <Label size="3xl" weight="semibold">
             Login
           </Label>
         </Layout>
