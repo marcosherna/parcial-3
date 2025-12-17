@@ -41,10 +41,6 @@ export default function LoginScreen({ navigation }) {
       await sigIn(values.email, values.password);
       setLoading(false);
       toast.success("Bienvenido", "Inicio de sesión exitoso");
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "main" }],
-      });
     } catch (error) {
       setLoading(false);
       toast.error("Error", "Credenciales incorrectas");

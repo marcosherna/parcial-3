@@ -49,13 +49,6 @@ export default function SettingScreen() {
       );
   }, [option]);
 
-  const resetToWellcome = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "wellcome" }],
-    });
-  };
-
   const handleDeleteAccount = async (password) => {
     try {
       if (!user) return;
@@ -63,8 +56,6 @@ export default function SettingScreen() {
       await reauthenticateUser(user, password);
       await deleteUser(user);
       bttSheet.current?.dismiss();
-
-      resetToWellcome();
     } catch (error) {
       console.log(error);
       Alert.alert("Error", "No se pudo eliminar la cuenta");
@@ -75,7 +66,6 @@ export default function SettingScreen() {
   const handleLogout = async () => {
     try {
       await signOut();
-      resetToWellcome();
     } catch (error) {
       Alert.alert("Error", "No se pudo cerrar sesión");
     }
